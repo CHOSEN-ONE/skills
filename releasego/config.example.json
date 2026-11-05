@@ -1,0 +1,9 @@
+{
+  "username": "your-ldap-username",
+  "password": "your-ldap-password",
+  "releasegoBaseUrl": "https://releasego.tingyun.com",
+  "gitlabBaseUrl": "https://git.tingyun.com",
+  "jenkinsBaseUrl": "https://jenkins-new.tingyun.com",
+  "browserCdp": "http://127.0.0.1:9222",
+  "gitlabAllowHttp": false
+}

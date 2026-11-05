@@ -1,0 +1,7 @@
+interface:
+  display_name: "ReleaseGo"
+  short_description: "Portable Tingyun ReleaseGo/GitLab/Jenkins RUM private-release workflow."
+  default_prompt: "Use $releasego for portable ReleaseGo private-release workflows: RUM inventory, GitLab compare, Jenkins builds, migration, and ReleaseGo filling."
+
+policy:
+  allow_implicit_invocation: true

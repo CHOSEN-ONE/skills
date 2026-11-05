@@ -7,6 +7,7 @@
 | Skill | 用途 | 安装 |
 |---|---|---|
 | `chandao` | 通过 API 查询、核对和维护禅道任务、Bug 与工时 | `npx skills add CHOSEN-ONE/skills --skill chandao` |
+| `releasego` | 查询发版、比较 GitLab 改动和跟踪 Jenkins 构建 | `npx skills add CHOSEN-ONE/skills --skill releasego` |
 
 ## 安装全部 Skills
 
@@ -51,4 +52,4 @@ skills/
 
 ## License
 
-各 skill 的授权方式以其目录中的 LICENSE 为准。
+各 skill 优先使用其目录中的 LICENSE。未单独声明时，适用仓库根目录的 LICENSE。
