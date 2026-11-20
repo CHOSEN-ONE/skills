@@ -9,6 +9,8 @@
 | [chandao](chandao/README.md) | 通过 HTTP 管理禅道项目版本和测试单，按 Markdown 模板提测，同时支持任务查询、Bug 处理和工时核对补录 | `npx skills add CHOSEN-ONE/skills --skill chandao` |
 | `releasego` | 查询发版、比较 GitLab 改动和跟踪 Jenkins 构建 | `npx skills add CHOSEN-ONE/skills --skill releasego` |
 
+用禅道补日志时，可以直接说：“昨天花了俩小时查 App 请求被误拦的问题，帮我把工时补上。” 只记得部分任务名也可以开始。[更多日常说法](chandao/README.md#补写禅道日志)
+
 ## 安装全部 Skills
 
 ```bash
