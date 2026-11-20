@@ -69,6 +69,14 @@
 
 ## 安装
 
+**让 Agent 全局安装**：把下面这句话直接发给你的 Agent 即可。
+
+```text
+帮我把这个禅道 skill（chandao）装到全局，我想在其他项目里也能用。地址是 https://github.com/CHOSEN-ONE/skills/tree/master/chandao
+```
+
+**用命令行安装**：下面的命令安装到当前项目。在末尾加上 `-g` 即可全局安装。
+
 ```bash
 npx skills add CHOSEN-ONE/skills --skill chandao
 ```
