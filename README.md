@@ -6,7 +6,7 @@
 
 | Skill | 用途 | 安装 |
 |---|---|---|
-| `chandao` | 通过 API 查询、核对和维护禅道任务、Bug 与工时 | `npx skills add CHOSEN-ONE/skills --skill chandao` |
+| [chandao](chandao/README.md) | 通过 HTTP 管理禅道项目版本和测试单，按 Markdown 模板提测，同时支持任务查询、Bug 处理和工时核对补录 | `npx skills add CHOSEN-ONE/skills --skill chandao` |
 | `releasego` | 查询发版、比较 GitLab 改动和跟踪 Jenkins 构建 | `npx skills add CHOSEN-ONE/skills --skill releasego` |
 
 ## 安装全部 Skills
