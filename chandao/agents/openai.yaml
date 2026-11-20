@@ -1,7 +1,7 @@
 interface:
   display_name: "Chandao"
-  short_description: "Browserless Chandao Bug, task, and effort-log workflow."
-  default_prompt: "Use $chandao to query Bugs/tasks, safely resolve an authorized Bug, or record and verify Chandao effort logs through HTTP APIs."
+  short_description: "Chandao test requests, builds, Bugs, tasks and effort logs."
+  default_prompt: "Use $chandao to look up or maintain project test requests and builds, track Bugs and tasks, or record and verify effort logs."
 
 policy:
   allow_implicit_invocation: true

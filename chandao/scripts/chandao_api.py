@@ -20,6 +20,8 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode, urljoin
 from urllib.request import HTTPCookieProcessor, Request, build_opener
 
+from project_qa import ProjectQA, ProjectQAError, register as register_project_qa
+
 
 DEFAULT_BASE_URL = "https://chandao.tingyun.com/pro/"
 LOGIN_PAGE = "user-login.html"
@@ -92,7 +94,7 @@ class UrlLibTransport:
         if headers:
             merged_headers.update(headers)
         if data is not None:
-            encoded_data = urlencode(data).encode("utf-8")
+            encoded_data = urlencode(data, doseq=True).encode("utf-8")
             merged_headers.setdefault(
                 "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8"
             )
@@ -391,6 +393,22 @@ class ChandaoClient:
         if self._is_login_page(response.body):
             raise AuthenticationError("Chandao session remained unauthenticated after one login retry.")
         return response
+
+    def qa_write(self, method, endpoint, data=None, *, ajax=False):
+        """Submit once after authenticated preflight, including confirmed delete GETs."""
+        headers = {"X-Requested-With": "XMLHttpRequest"} if ajax else {}
+        response = self.transport.request(method, self._url(endpoint), data=data, headers=headers)
+        if response.status >= 400 or self._is_login_page(response.body) or self._requires_password_change(response.body):
+            raise ChandaoError(f"{endpoint} 未确认成功，请先回读目标记录。")
+        try:
+            result = json.loads(response.body)
+        except ValueError:
+            result = None
+        if isinstance(result, dict) and (result.get("result") in ("fail", "error")
+                                         or result.get("status") in ("fail", "failed", "error")):
+            raise ChandaoError(f"禅道返回写入提示，请核对 {endpoint} 的结果。")
+        if method == "GET" and (not isinstance(result, dict) or result.get("result") != "success"):
+            raise ChandaoError("删除响应未确认成功，请先回读目标记录。")
 
     @staticmethod
     def _items(source: str, object_type: str) -> list[dict[str, Any]]:
@@ -760,6 +778,7 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--workspace", type=Path, default=Path.cwd())
     parser.add_argument("--base-url", default=os.environ.get("CHANDAO_BASE_URL", DEFAULT_BASE_URL))
     subparsers = parser.add_subparsers(dest="command", required=True)
+    register_project_qa(subparsers)
     subparsers.add_parser("auth-check")
     for name in ("my-bugs", "my-tasks"):
         query = subparsers.add_parser(name)
@@ -808,7 +827,9 @@ def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
     try:
         client = ChandaoClient.from_environment(args.workspace, args.base_url)
-        if args.command == "auth-check":
+        if getattr(args, "qa", False):
+            result = ProjectQA(client).run(args)
+        elif args.command == "auth-check":
             result = client.auth_check()
         elif args.command == "my-bugs":
             result = client.my_bugs(args.scope, args.limit, args.page)
@@ -840,7 +861,7 @@ def main(argv: list[str] | None = None) -> int:
             result = client.delete_effort(args.id, args.apply)
         _emit(result)
         return 0
-    except ChandaoError as error:
+    except (ChandaoError, ProjectQAError) as error:
         print(f"ERROR: {error}", file=sys.stderr)
         return 2
 

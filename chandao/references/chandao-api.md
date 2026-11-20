@@ -6,6 +6,8 @@ The instance is ZenTao Pro 9.0.3 and uses `PATH_INFO` routes. The Python client 
 
 ## CLI Command Contract
 
+For project selection, product lists, and project test request / build CRUD, see [项目提测接口](project-qa.md). The commands below cover the other workflows.
+
 The wrapper exposes these subcommands: `auth-check`, `my-bugs`, `bug`, `resolve-bug`, `my-tasks`, `task`, `my-efforts`, `calendar-efforts`, `effort`, `create-effort`, `edit-effort`, and `delete-effort`. Use `my-tasks` to list tasks, `task --id <ID>` to inspect one task, and `effort --id <ID>` to inspect one effort.
 
 ## Authentication

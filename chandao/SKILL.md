@@ -1,6 +1,6 @@
 ---
 name: chandao
-description: Use when querying, recording, verifying, repairing, or backfilling Tingyun Chandao (ZenTao) tasks, effort logs, assigned bugs, bug details, or API sessions without browser automation.
+description: Use for Tingyun Chandao (ZenTao) project test requests and builds, Bug lookup and resolution, tasks, and effort logging through HTTP. Supports 禅道测试单、提测、项目版本和工时。
 ---
 
 # Chandao API
@@ -44,6 +44,16 @@ python scripts/chandao_api.py --workspace . effort --id 308704
 - `my-efforts` supports `all`, `thisweek`, `lastweek`, `thismonth`, and `lastmonth`. The all-scope page is paginated; use `calendar-efforts` for a year's complete event list.
 - Bug detail output includes ID, title, product, status, severity, priority, and reproduction steps when exposed by the page.
 - Task detail output includes ID, title, project, module, related story, assignee, type, status, progress, priority, estimate, consumed, remaining, start dates, and deadline when exposed by the page.
+
+## 项目测试单与版本
+
+用户说“提测、测试单、项目里的版本”时，使用项目 → 测试下的测试单（testtask）与版本（build）。命令、字段和已验证接口见 [项目提测接口](references/project-qa.md)。
+
+1. 从上下文确定项目。无法确定时列出 **RUM-产品迭代-2026、RUM-客户支持-2026、观云-RUM-2025** 让用户选择，同时接受手动输入的项目全名或 ID。用 `projects` 核对可见项目。
+2. 用 `project-products` 查该项目实际关联的产品，根据提测功能选择 RUM-APP、RUM-BROWSER、RUM-MP、观云等。产品不明确时列出该项目的实际选项。
+3. 先用 `testtasks`、`builds` 查该项目及产品的现有记录。核对功能、名称及关联版本，找到符合要求的记录就返回 ID 或继续使用它。用户要求提测且缺少所需版本时，先创建并核实版本，再使用它的 ID 创建测试单。仅请求查询时，返回查询结果。
+4. 创建测试单前，从用户提供的信息取负责人、开始日期、结束日期，缺哪项就主动问哪项，可一次问齐。描述保留七个方括号标题，各区块正文用 Markdown。前两项“自测是否通过”和“提测功能是否演示”固定填写“是”。后五项给测试人员简写，多个验证点用列表，配置键或版本号可用行内代码。
+5. 写入使用明确的目标和 `--apply`。对具体 ID 的修改保留其他字段。删除取当前账号对该记录可见的操作入口，并回读全量项目列表核对结果。
 
 ## Effort Writes
 
